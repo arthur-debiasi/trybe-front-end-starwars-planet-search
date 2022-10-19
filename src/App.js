@@ -7,4 +7,4 @@ function App() {
   );
 }
 
-export default App; // arthur debiasi
+export default App;
