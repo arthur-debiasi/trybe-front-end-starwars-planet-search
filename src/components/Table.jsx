@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { fetchResults } = useContext(AppContext);
+  const { fetchResults, nameFilter } = useContext(AppContext);
   return (
     <table>
       <thead>
@@ -24,66 +24,68 @@ export default function Table() {
       </thead>
       <tbody>
         {
-          fetchResults.map(({
-            name,
-            rotation_period: rotation,
-            orbital_period: orbital,
-            diameter,
-            climate,
-            gravity,
-            terrain,
-            surface_water: water,
-            population,
-            films,
-            created,
-            edited,
-            url,
-          }) => (
-            <tr key={ name }>
-              <td>
-                {name}
-              </td>
-              <td>
-                {rotation}
-              </td>
-              <td>
-                {orbital}
-              </td>
-              <td>
-                {diameter}
-              </td>
-              <td>
-                {climate}
-              </td>
-              <td>
-                {gravity}
-              </td>
-              <td>
-                {terrain}
-              </td>
-              <td>
-                {water}
-              </td>
-              <td>
-                {population}
-              </td>
-              <td>
-                <ul>
+          fetchResults
+            .filter(({ name }) => name.toLowerCase().includes(nameFilter.toLowerCase()))
+            .map(({
+              name,
+              rotation_period: rotation,
+              orbital_period: orbital,
+              diameter,
+              climate,
+              gravity,
+              terrain,
+              surface_water: water,
+              population,
+              films,
+              created,
+              edited,
+              url,
+            }) => (
+              <tr key={ name }>
+                <td>
+                  {name}
+                </td>
+                <td>
+                  {rotation}
+                </td>
+                <td>
+                  {orbital}
+                </td>
+                <td>
+                  {diameter}
+                </td>
+                <td>
+                  {climate}
+                </td>
+                <td>
+                  {gravity}
+                </td>
+                <td>
+                  {terrain}
+                </td>
+                <td>
+                  {water}
+                </td>
+                <td>
+                  {population}
+                </td>
+                <td>
+                  <ul>
 
-                  {films.map((e) => <li key={ e }>{e}</li>)}
-                </ul>
-              </td>
-              <td>
-                {created}
-              </td>
-              <td>
-                {edited}
-              </td>
-              <td>
-                {url}
-              </td>
-            </tr>
-          ))
+                    {films.map((e) => <li key={ e }>{e}</li>)}
+                  </ul>
+                </td>
+                <td>
+                  {created}
+                </td>
+                <td>
+                  {edited}
+                </td>
+                <td>
+                  {url}
+                </td>
+              </tr>
+            ))
         }
       </tbody>
     </table>

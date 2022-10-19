@@ -6,6 +6,7 @@ const END_POINT = 'https://swapi.dev/api/planets';
 
 export default function AppProvider({ children }) {
   const [fetchResults, setFetchResults] = useState([]);
+  const [nameFilter, setNameFilter] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,9 +20,13 @@ export default function AppProvider({ children }) {
     fetchData();
   }, []);
 
+  const handleNameFilter = ({ target: { value } }) => setNameFilter(value);
+
   const value = useMemo(() => ({
     fetchResults,
-  }), [fetchResults]);
+    nameFilter,
+    handleNameFilter,
+  }), [fetchResults, nameFilter]);
 
   return (
     <AppContext.Provider value={ value }>
