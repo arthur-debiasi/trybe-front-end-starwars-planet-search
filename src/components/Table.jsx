@@ -2,7 +2,10 @@ import React, { useContext } from 'react';
 import AppContext from '../context/AppContext';
 
 export default function Table() {
-  const { fetchResults, nameFilter } = useContext(AppContext);
+  const {
+    fetchResults,
+    nameFilter,
+  } = useContext(AppContext);
   return (
     <table>
       <thead>
