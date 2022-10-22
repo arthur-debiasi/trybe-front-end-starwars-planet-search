@@ -6,10 +6,12 @@ const END_POINT = 'https://swapi.dev/api/planets';
 
 export default function AppProvider({ children }) {
   const [fetchResults, setFetchResults] = useState([]);
+  const [collumnSelection, setCollumnSelection] = useState([]);
   const [nameFilter, setNameFilter] = useState('');
   const [collumnFilter, setCollumnFilter] = useState('population');
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState('0');
+  const [filterByNumericValues, setFilterByNumericValues] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,49 +22,107 @@ export default function AppProvider({ children }) {
         return e;
       }));
     };
+    setCollumnSelection([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const updateCollumnFilter = () => setCollumnFilter(collumnSelection[0]);
+    updateCollumnFilter();
+  }, [collumnSelection]);
 
   const handleNameFilter = ({ target: { value } }) => setNameFilter(value);
   const handleCollumnFilter = ({ target: { value } }) => setCollumnFilter(value);
   const handleComparisonFilter = ({ target: { value } }) => setComparisonFilter(value);
   const handleValueFilter = ({ target: { value } }) => setValueFilter(value);
 
-  const handleFilterBtn = useCallback(
-    () => {
-      const filteredResults = fetchResults.filter((e) => {
-        switch (comparisonFilter) {
+  const handleFilterByNumericValues = useCallback(() => {
+    setFilterByNumericValues([
+      ...filterByNumericValues,
+      { comparison: comparisonFilter, collumn: collumnFilter, value: valueFilter },
+    ]);
+    if (collumnSelection.length > 1) {
+      setCollumnSelection(collumnSelection.filter((e) => e !== collumnFilter));
+      const updateCollumnFilter = () => setCollumnFilter(collumnSelection[0]);
+      updateCollumnFilter();
+    } else {
+      setCollumnSelection([]);
+    }
+  }, [
+    collumnSelection,
+    filterByNumericValues,
+    comparisonFilter,
+    collumnFilter,
+    valueFilter,
+  ]);
+
+  const handleFilter = useCallback(
+    (array, comparison, collumn, value) => {
+      const filteredResult = array.filter((e) => {
+        switch (comparison) {
         case 'maior que':
-          return Number(e[collumnFilter]) > Number(valueFilter);
+          return Number(e[collumn]) > Number(value);
         case 'menor que':
-          return Number(e[collumnFilter]) < Number(valueFilter);
+          return Number(e[collumn]) < Number(value);
         default:
-          return Number(e[collumnFilter]) === Number(valueFilter);
+          return Number(e[collumn]) === Number(value);
         }
       });
-      setFetchResults(filteredResults);
+      return filteredResult;
     },
-    [collumnFilter, comparisonFilter, fetchResults, valueFilter],
+    [],
   );
+
+  const handleDeleteBtn = useCallback((collumn) => {
+    setFilterByNumericValues(filterByNumericValues.filter((e) => e.collumn !== collumn));
+    setCollumnSelection([...collumnSelection, collumn]);
+  }, [collumnSelection, filterByNumericValues]);
+
+  const handleDeleteFilters = useCallback(() => {
+    setFilterByNumericValues([]);
+    setCollumnSelection([
+      'population',
+      'orbital_period',
+      'diameter',
+      'rotation_period',
+      'surface_water',
+    ]);
+  }, []);
 
   const value = useMemo(() => ({
     fetchResults,
+    collumnSelection,
     nameFilter,
     collumnFilter,
     comparisonFilter,
     valueFilter,
+    filterByNumericValues,
     handleNameFilter,
     handleCollumnFilter,
     handleComparisonFilter,
     handleValueFilter,
-    handleFilterBtn,
+    handleFilter,
+    handleFilterByNumericValues,
+    handleDeleteBtn,
+    handleDeleteFilters,
   }), [
     fetchResults,
+    collumnSelection,
     nameFilter,
     collumnFilter,
     comparisonFilter,
     valueFilter,
-    handleFilterBtn,
+    filterByNumericValues,
+    handleFilter,
+    handleFilterByNumericValues,
+    handleDeleteBtn,
+    handleDeleteFilters,
   ]);
 
   return (

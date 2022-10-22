@@ -5,7 +5,17 @@ export default function Table() {
   const {
     fetchResults,
     nameFilter,
+    handleFilter,
+    filterByNumericValues,
   } = useContext(AppContext);
+  const arrayOfDisplay = filterByNumericValues.length < 1
+    ? fetchResults : filterByNumericValues
+      .reduce((acc, {
+        comparison,
+        collumn,
+        value,
+      }) => handleFilter(acc, comparison, collumn, value), fetchResults);
+  console.log(arrayOfDisplay);
   return (
     <table>
       <thead>
@@ -27,7 +37,7 @@ export default function Table() {
       </thead>
       <tbody>
         {
-          fetchResults
+          arrayOfDisplay
             .filter(({ name }) => name.toLowerCase().includes(nameFilter.toLowerCase()))
             .map(({
               name,
@@ -74,7 +84,6 @@ export default function Table() {
                 </td>
                 <td>
                   <ul>
-
                     {films.map((e) => <li key={ e }>{e}</li>)}
                   </ul>
                 </td>

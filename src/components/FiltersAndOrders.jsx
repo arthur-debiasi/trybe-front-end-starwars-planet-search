@@ -3,11 +3,15 @@ import AppContext from '../context/AppContext';
 
 export default function FiltersAndOrders() {
   const {
+    collumnSelection,
+    filterByNumericValues,
     handleNameFilter,
     handleCollumnFilter,
     handleComparisonFilter,
     handleValueFilter,
-    handleFilterBtn,
+    handleFilterByNumericValues,
+    handleDeleteBtn,
+    handleDeleteFilters,
   } = useContext(AppContext);
   return (
     <>
@@ -28,13 +32,11 @@ export default function FiltersAndOrders() {
         <select
           id="collum-filter"
           data-testid="column-filter"
-          onChange={ handleCollumnFilter }
+          onClick={ handleCollumnFilter }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {collumnSelection.map((e) => (
+            <option key={ e } value={ e }>{e}</option>
+          ))}
         </select>
       </label>
       <label htmlFor="comparison-filter">
@@ -65,10 +67,30 @@ export default function FiltersAndOrders() {
       <button
         type="button"
         data-testid="button-filter"
-        onClick={ handleFilterBtn }
+        onClick={ handleFilterByNumericValues }
       >
         FILTRAR
       </button>
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ handleDeleteFilters }
+      >
+        Remover todas filtragens
+      </button>
+      {
+        filterByNumericValues.map(({ comparison, collumn, value }) => (
+          <div key={ `${collumn}-filter` } data-testid="filter">
+            <p>{`${collumn} ${comparison} ${value}`}</p>
+            <button
+              type="button"
+              onClick={ () => handleDeleteBtn(collumn) }
+            >
+              EXCLUIR
+            </button>
+          </div>
+        ))
+      }
     </>
   );
 }
