@@ -26,31 +26,35 @@ export default function AscDesc() {
             <option key={ `${e}-ascDesc` } value={ e }>{e}</option>
           ))}
         </select>
-        <label htmlFor="column-sort-input-asc">
-          Ascendente:
-          {' '}
-          <input
-            type="radio"
-            name="ASC-DESC"
-            id="column-sort-input-asc"
-            data-testid="column-sort-input-asc"
-            value="ASC"
-            onChange={ handleRadioSort }
-          />
-        </label>
-        <label htmlFor="column-sort-input-desc">
-          Descendente:
-          {' '}
-          <input
-            type="radio"
-            name="ASC-DESC"
-            id="column-sort-input-desc"
-            data-testid="column-sort-input-desc"
-            value="DESC"
-            onChange={ handleRadioSort }
-          />
-        </label>
       </label>
+      <label htmlFor="column-sort-input-asc">
+        <input
+          type="radio"
+          name="ASC-DESC"
+          id="column-sort-input-asc"
+          data-testid="column-sort-input-asc"
+          value="ASC"
+          onChange={ handleRadioSort }
+        />
+        Ascendente
+      </label>
+      <label htmlFor="column-sort-input-desc">
+        <input
+          type="radio"
+          name="ASC-DESC"
+          id="column-sort-input-desc"
+          data-testid="column-sort-input-desc"
+          value="DESC"
+          onChange={ handleRadioSort }
+        />
+        Descendente
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+      >
+        ORDENAR
+      </button>
     </form>
   );
 }
