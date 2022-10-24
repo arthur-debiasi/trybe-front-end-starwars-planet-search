@@ -12,6 +12,7 @@ export default function AppProvider({ children }) {
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState('0');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [order, setOrder] = useState({ collumn: 'population', sort: 'ASC' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,6 +96,14 @@ export default function AppProvider({ children }) {
     ]);
   }, []);
 
+  const handleCollumnSortSelection = useCallback((
+    { target: { value } },
+  ) => setOrder({ ...order, collumn: value }), [order]);
+
+  const handleRadioSort = useCallback((
+    { target: { value } },
+  ) => setOrder({ ...order, sort: value }), [order]);
+
   const value = useMemo(() => ({
     fetchResults,
     collumnSelection,
@@ -103,6 +112,7 @@ export default function AppProvider({ children }) {
     comparisonFilter,
     valueFilter,
     filterByNumericValues,
+    order,
     handleNameFilter,
     handleCollumnFilter,
     handleComparisonFilter,
@@ -111,18 +121,22 @@ export default function AppProvider({ children }) {
     handleFilterByNumericValues,
     handleDeleteBtn,
     handleDeleteFilters,
-  }), [
-    fetchResults,
+    handleCollumnSortSelection,
+    handleRadioSort,
+  }), [fetchResults,
     collumnSelection,
     nameFilter,
     collumnFilter,
     comparisonFilter,
     valueFilter,
     filterByNumericValues,
+    order,
     handleFilter,
     handleFilterByNumericValues,
     handleDeleteBtn,
     handleDeleteFilters,
+    handleCollumnSortSelection,
+    handleRadioSort,
   ]);
 
   return (

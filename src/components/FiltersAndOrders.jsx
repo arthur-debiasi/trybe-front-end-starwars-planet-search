@@ -27,7 +27,7 @@ export default function FiltersAndOrders() {
         />
       </label>
       <label htmlFor="collumn-filter">
-        Coluna:
+        Filtro por coluna:
         {' '}
         <select
           id="collum-filter"
