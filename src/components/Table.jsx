@@ -15,7 +15,6 @@ export default function Table() {
         collumn,
         value,
       }) => handleFilter(acc, comparison, collumn, value), fetchResults);
-  console.log(arrayOfDisplay);
   return (
     <table>
       <thead>
@@ -55,7 +54,7 @@ export default function Table() {
               url,
             }) => (
               <tr key={ name }>
-                <td>
+                <td data-testid="planet-name">
                   {name}
                 </td>
                 <td>

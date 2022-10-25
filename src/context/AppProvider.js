@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppContext from './AppContext';
 
 const END_POINT = 'https://swapi.dev/api/planets';
+const NEGATIVE = -1;
 
 export default function AppProvider({ children }) {
   const [fetchResults, setFetchResults] = useState([]);
@@ -12,7 +13,11 @@ export default function AppProvider({ children }) {
   const [comparisonFilter, setComparisonFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState('0');
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
-  const [order, setOrder] = useState({ collumn: 'population', sort: 'ASC' });
+  const [order, setOrder] = useState({
+    collumn: 'population',
+    sort: 'ASC',
+  });
+  const [sort, setSort] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,6 +109,26 @@ export default function AppProvider({ children }) {
     { target: { value } },
   ) => setOrder({ ...order, sort: value }), [order]);
 
+  const handleSortBtn = useCallback(() => {
+    setSort(!sort);
+    switch (order.sort) {
+    case 'ASC':
+      fetchResults.sort((a, b) => {
+        if (b[order.collumn] === 'unknown') return NEGATIVE;
+        return Number(a[order.collumn]) - Number(b[order.collumn]);
+      });
+      setFetchResults(fetchResults);
+      break;
+    default:
+      fetchResults.sort((a, b) => {
+        if (b[order.collumn] === 'unknown') return NEGATIVE;
+        return b[order.collumn] - a[order.collumn];
+      });
+      setFetchResults(fetchResults);
+      break;
+    }
+  }, [fetchResults, order, sort]);
+
   const value = useMemo(() => ({
     fetchResults,
     collumnSelection,
@@ -113,6 +138,7 @@ export default function AppProvider({ children }) {
     valueFilter,
     filterByNumericValues,
     order,
+    sort,
     handleNameFilter,
     handleCollumnFilter,
     handleComparisonFilter,
@@ -123,7 +149,9 @@ export default function AppProvider({ children }) {
     handleDeleteFilters,
     handleCollumnSortSelection,
     handleRadioSort,
-  }), [fetchResults,
+    handleSortBtn,
+  }), [
+    fetchResults,
     collumnSelection,
     nameFilter,
     collumnFilter,
@@ -131,12 +159,14 @@ export default function AppProvider({ children }) {
     valueFilter,
     filterByNumericValues,
     order,
+    sort,
     handleFilter,
     handleFilterByNumericValues,
     handleDeleteBtn,
     handleDeleteFilters,
     handleCollumnSortSelection,
     handleRadioSort,
+    handleSortBtn,
   ]);
 
   return (

@@ -5,6 +5,7 @@ export default function AscDesc() {
   const {
     handleCollumnSortSelection,
     handleRadioSort,
+    handleSortBtn,
   } = useContext(AppContext);
   return (
     <form>
@@ -52,6 +53,7 @@ export default function AscDesc() {
       <button
         type="button"
         data-testid="column-sort-button"
+        onClick={ handleSortBtn }
       >
         ORDENAR
       </button>
