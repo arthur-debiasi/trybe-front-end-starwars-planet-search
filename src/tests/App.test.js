@@ -26,9 +26,9 @@ describe('Testes do StarWars', () => {
     await waitFor(() => expect(screen.getByText(/tatooine/i)).toBeInTheDocument());
     const tatooine = screen.getByText(/tatooine/i);
     userEvent.type(nameFilter, 'al');
-    expect(tatooine).not.toBeInTheDocument()
-
-  })
+    expect(tatooine).not.toBeInTheDocument();
+  });
+  
   it('02 - testa o filtro por coluna', async () => {
     renderWithRouter(<App/>);
     await waitFor(() => expect(screen.getByText(/tatooine/i)).toBeInTheDocument());
@@ -90,10 +90,9 @@ describe('Testes do StarWars', () => {
     expect(columnFilter.children[2].innerHTML).toBe('diameter');
     expect(columnFilter.children[3].innerHTML).toBe('rotation_period');
     expect(columnFilter.children[4].innerHTML).toBe('surface_water');
-    expect(deleteButton).not.toBeInTheDocument()
+    expect(deleteButton).not.toBeInTheDocument();
+  });
 
-    
-  })
   it('03 - testa o filtro por ordem', async () => {
     renderWithRouter(<App/>);
     await waitFor(() => expect(screen.getByText(/tatooine/i)).toBeInTheDocument());
@@ -136,15 +135,6 @@ describe('Testes do StarWars', () => {
     userEvent.click(sortAsc);
     userEvent.click(sortBtn);
 
-  })
-  it('', () => {
-    
-  })
-  it('', () => {
-    
-  })
-  it('', () => {
-    
-  })
+  });
 
 })
