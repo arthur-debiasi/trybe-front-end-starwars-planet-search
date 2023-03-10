@@ -2,7 +2,7 @@
 
 ## 💻 Project
 
-Aplicação que lista e filtra os planetas do universo de Star Wars usando Context API e Hooks para controlar os estados globais.
+Application that lists and filters planets from the Star Wars universe using Context API and Hooks to control global states.
 
 ## 🚀 Built With
 
